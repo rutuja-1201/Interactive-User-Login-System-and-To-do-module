@@ -6,9 +6,9 @@ app.use(express.json());
 app.use(cors());
 
 
-app.use('/api/auth', require('./src/routes/authroutes'));
-app.use('/api/todo', require('./src/routes/todoroutes'));
-app.use('api/user',require('./src/routes/userroutes'))
+app.use('/auth', require('./src/routes/authroutes'));
+app.use('/todo', require('./src/routes/todoroutes'));
+app.use('/user',require('./src/routes/userroutes'))
 
 
 
