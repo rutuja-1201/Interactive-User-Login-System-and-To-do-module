@@ -55,3 +55,26 @@ exports.login = async (req, res) => {
     }
   };
   
+exports.resetPassword = async (req, res) => {
+  const resetToken = req.params.resetToken;
+  const newPassword = req.body.newPassword;
+
+  try {
+    const user = await User.findOne({
+      resetToken,
+      resetTokenExpiration: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(404).json({ message: 'Invalid or expired reset token' });
+    }
+    user.password = newPassword;
+    user.resetToken = undefined;
+    user.resetTokenExpiration = undefined;
+    await user.save();
+
+    res.status(200).json({ message: 'Password reset successful' });
+  } catch (error) {
+    res.status(500).json({ message: 'Password reset failed' });
+  }
+};
